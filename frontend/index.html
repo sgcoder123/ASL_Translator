@@ -40,8 +40,8 @@
                     <p class="hero-subtitle">Transform American Sign Language into English text with our advanced AI-powered translator</p>
                     <div class="hero-buttons">
                         <button class="btn btn-primary" id="startBtn">
-                            <i class="fas fa-play"></i>
-                            Start Translation
+                            <i class="fas fa-upload"></i>
+                            Upload Video
                         </button>
 
                     </div>
@@ -55,59 +55,48 @@
                 </div>
             </section>
 
-            <!-- Translation Interface -->
-            <section class="translation-interface" id="translationSection" style="display: none;">
+            <!-- Video Upload Interface -->
+            <section class="video-upload-interface" id="uploadSection" style="display: none;">
                 <div class="interface-header">
-                    <h3>Live Translation</h3>
+                    <h3>Upload ASL Video</h3>
                     <button class="close-btn" id="closeBtn">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 
-                <div class="translation-container">
-                    <!-- Camera/Video Feed -->
-                    <div class="camera-section">
-                        <div class="camera-placeholder" id="cameraPlaceholder">
-                            <div class="camera-icon">
-                                <i class="fas fa-camera"></i>
-                            </div>
-                            <p>Camera Feed</p>
-                            <button class="btn btn-primary" id="enableCameraBtn">
-                                <i class="fas fa-video"></i>
-                                Enable Camera
-                            </button>
+                <div class="upload-container">
+                    <!-- Video Upload Area -->
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
                         </div>
-                        <video id="videoFeed" autoplay muted style="display: none;"></video>
-                        <canvas id="canvas" style="display: none;"></canvas>
+                        <h4>Drop your ASL video here</h4>
+                        <p>or click to browse files</p>
+                        <span class="file-types">Supports: MP4, AVI, MOV, WebM</span>
+                        <input type="file" id="videoFileInput" accept="video/*" style="display: none;">
                     </div>
 
-                    <!-- Translation Controls -->
-                    <div class="controls-section">
-                        <div class="control-group">
-                            <label for="translationMode">Translation Mode</label>
-                            <select id="translationMode" class="select-input">
-                                <option value="realtime">Real-time</option>
-                                <option value="capture">Capture & Translate</option>
-                                <option value="upload">Upload Video</option>
-                            </select>
+                    <!-- Video Preview -->
+                    <div class="video-preview" id="videoPreview" style="display: none;">
+                        <video id="uploadedVideo" controls>
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-info">
+                            <h4 id="videoFileName">Video File</h4>
+                            <p id="videoFileSize">File size</p>
                         </div>
-                        
+                    </div>
 
-
-                        <div class="control-buttons">
-                            <button class="btn btn-primary" id="translateBtn">
-                                <i class="fas fa-language"></i>
-                                Translate
-                            </button>
-                            <button class="btn btn-secondary" id="pauseBtn">
-                                <i class="fas fa-pause"></i>
-                                Pause
-                            </button>
-                            <button class="btn btn-outline" id="resetBtn">
-                                <i class="fas fa-redo"></i>
-                                Reset
-                            </button>
-                        </div>
+                    <!-- Upload Controls -->
+                    <div class="upload-controls">
+                        <button class="btn btn-primary" id="uploadBtn" style="display: none;">
+                            <i class="fas fa-upload"></i>
+                            Upload & Translate
+                        </button>
+                        <button class="btn btn-outline" id="changeVideoBtn" style="display: none;">
+                            <i class="fas fa-exchange-alt"></i>
+                            Change Video
+                        </button>
                     </div>
                 </div>
 
@@ -145,10 +134,10 @@
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-bolt"></i>
+                            <i class="fas fa-upload"></i>
                         </div>
-                        <h4>Real-time Translation</h4>
-                        <p>Instant ASL to English conversion with minimal latency</p>
+                        <h4>Easy Video Upload</h4>
+                        <p>Simply drag and drop your ASL videos for instant translation</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">

@@ -1,36 +1,27 @@
 // DOM Elements
-const startBtn = document.getElementById('startBtn');
-const loginBtn = document.getElementById('loginBtn');
-const signupBtn = document.getElementById('signupBtn');
-
-const translationSection = document.getElementById('translationSection');
-const closeBtn = document.getElementById('closeBtn');
-const enableCameraBtn = document.getElementById('enableCameraBtn');
-const translateBtn = document.getElementById('translateBtn');
-const pauseBtn = document.getElementById('pauseBtn');
-const resetBtn = document.getElementById('resetBtn');
-const copyBtn = document.getElementById('copyBtn');
-const shareBtn = document.getElementById('shareBtn');
-const saveBtn = document.getElementById('saveBtn');
-const loadingOverlay = document.getElementById('loadingOverlay');
-const toast = document.getElementById('toast');
-const translationResult = document.getElementById('translationResult');
-const cameraPlaceholder = document.getElementById('cameraPlaceholder');
-const videoFeed = document.getElementById('videoFeed');
-const canvas = document.getElementById('canvas');
+let startBtn, loginBtn, signupBtn;
+let uploadSection, closeBtn, uploadArea, videoFileInput, videoPreview;
+let uploadedVideo, videoFileName, videoFileSize, uploadBtn, changeVideoBtn;
+let copyBtn, shareBtn, saveBtn, loadingOverlay, toast, translationResult;
 
 // State Management
-let isTranslating = false;
-let isPaused = false;
-let stream = null;
-let animationFrame = null;
+let selectedVideo = null;
+let isProcessing = false;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
+    try {
+        console.log('DOM Content Loaded');
+        initializeApp();
+    } catch (error) {
+        console.error('Error initializing app:', error);
+    }
 });
 
 function initializeApp() {
+    // Initialize DOM elements
+    initializeDOMElements();
+    
     // Add smooth scroll behavior for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -55,65 +46,134 @@ function initializeApp() {
     addEntranceAnimations();
 }
 
-function initializeEventListeners() {
-    // Start translation button
-    startBtn.addEventListener('click', () => {
-        showTranslationInterface();
-        showToast('Translation interface opened!', 'success');
+function initializeDOMElements() {
+    startBtn = document.getElementById('startBtn');
+    loginBtn = document.getElementById('loginBtn');
+    signupBtn = document.getElementById('signupBtn');
+    
+    uploadSection = document.getElementById('uploadSection');
+    closeBtn = document.getElementById('closeBtn');
+    uploadArea = document.getElementById('uploadArea');
+    videoFileInput = document.getElementById('videoFileInput');
+    videoPreview = document.getElementById('videoPreview');
+    uploadedVideo = document.getElementById('uploadedVideo');
+    videoFileName = document.getElementById('videoFileName');
+    videoFileSize = document.getElementById('videoFileSize');
+    uploadBtn = document.getElementById('uploadBtn');
+    changeVideoBtn = document.getElementById('changeVideoBtn');
+    copyBtn = document.getElementById('copyBtn');
+    shareBtn = document.getElementById('shareBtn');
+    saveBtn = document.getElementById('saveBtn');
+    loadingOverlay = document.getElementById('loadingOverlay');
+    toast = document.getElementById('toast');
+    translationResult = document.getElementById('translationResult');
+    
+    // Debug: Check if elements are found
+    console.log('DOM Elements initialized:', {
+        startBtn: !!startBtn,
+        uploadSection: !!uploadSection,
+        uploadArea: !!uploadArea,
+        videoFileInput: !!videoFileInput
     });
+    
+    // Debug: Log all elements
+    console.log('All DOM elements:', {
+        startBtn,
+        uploadSection,
+        uploadArea,
+        videoFileInput,
+        closeBtn,
+        uploadBtn
+    });
+}
+
+function initializeEventListeners() {
+    console.log('Initializing event listeners...');
+    
+    // Start upload button
+    if (startBtn) {
+        console.log('Start button found, adding event listener');
+        startBtn.addEventListener('click', () => {
+            console.log('Start button clicked!');
+            showUploadInterface();
+            showToast('Upload interface opened!', 'success');
+        });
+    } else {
+        console.error('Start button not found!');
+    }
 
     // Login button
-    loginBtn.addEventListener('click', () => {
-        showToast('Login functionality coming soon!', 'info');
-    });
+    if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+            showToast('Login functionality coming soon!', 'info');
+        });
+    }
 
     // Signup button
-    signupBtn.addEventListener('click', () => {
-        showToast('Sign up functionality coming soon!', 'info');
-    });
+    if (signupBtn) {
+        signupBtn.addEventListener('click', () => {
+            showToast('Sign up functionality coming soon!', 'info');
+        });
+    }
 
 
 
-    // Close translation interface
-    closeBtn.addEventListener('click', () => {
-        hideTranslationInterface();
-        stopCamera();
-    });
+    // Close upload interface
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            hideUploadInterface();
+        });
+    }
 
-    // Enable camera button
-    enableCameraBtn.addEventListener('click', () => {
-        enableCamera();
-    });
+    // Upload area click
+    if (uploadArea) {
+        uploadArea.addEventListener('click', () => {
+            videoFileInput.click();
+        });
+    }
 
-    // Translate button
-    translateBtn.addEventListener('click', () => {
-        toggleTranslation();
-    });
+    // File input change
+    if (videoFileInput) {
+        videoFileInput.addEventListener('change', handleVideoSelection);
+    }
 
-    // Pause button
-    pauseBtn.addEventListener('click', () => {
-        togglePause();
-    });
+    // Upload button
+    if (uploadBtn) {
+        uploadBtn.addEventListener('click', handleVideoUpload);
+    }
 
-    // Reset button
-    resetBtn.addEventListener('click', () => {
-        resetTranslation();
-    });
+    // Change video button
+    if (changeVideoBtn) {
+        changeVideoBtn.addEventListener('click', resetVideoSelection);
+    }
+
+    // Drag and drop functionality
+    if (uploadArea) {
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+    }
 
     // Copy button
-    copyBtn.addEventListener('click', () => {
-        copyTranslation();
-    });
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            copyTranslation();
+        });
+    }
 
     // Share button
-    shareBtn.addEventListener('click', () => {
-        shareTranslation();
-    });
+    if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+            shareTranslation();
+        });
+    }
 
     // Save button
-    saveBtn.addEventListener('click', () => {
-        saveTranslation();
-    });
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            saveTranslation();
+        });
+    }
 
     // Keyboard shortcuts
     document.addEventListener('keydown', handleKeyboardShortcuts);
@@ -140,61 +200,139 @@ function addEntranceAnimations() {
     });
 }
 
-function showTranslationInterface() {
-    translationSection.style.display = 'block';
-    translationSection.scrollIntoView({ behavior: 'smooth' });
+function showUploadInterface() {
+    console.log('showUploadInterface called');
+    console.log('uploadSection:', uploadSection);
+    
+    if (!uploadSection) {
+        console.error('uploadSection is null!');
+        return;
+    }
+    
+    uploadSection.style.display = 'block';
+    uploadSection.scrollIntoView({ behavior: 'smooth' });
     
     // Add entrance animation
-    translationSection.style.opacity = '0';
-    translationSection.style.transform = 'translateY(30px)';
+    uploadSection.style.opacity = '0';
+    uploadSection.style.transform = 'translateY(30px)';
     
     setTimeout(() => {
-        translationSection.style.transition = 'all 0.6s ease';
-        translationSection.style.opacity = '1';
-        translationSection.style.transform = 'translateY(0)';
+        uploadSection.style.transition = 'all 0.6s ease';
+        uploadSection.style.opacity = '1';
+        uploadSection.style.transform = 'translateY(0)';
     }, 100);
 }
 
-function hideTranslationInterface() {
-    translationSection.style.transition = 'all 0.4s ease';
-    translationSection.style.opacity = '0';
-    translationSection.style.transform = 'translateY(30px)';
+function hideUploadInterface() {
+    uploadSection.style.transition = 'all 0.4s ease';
+    uploadSection.style.opacity = '0';
+    uploadSection.style.transform = 'translateY(30px)';
     
     setTimeout(() => {
-        translationSection.style.display = 'none';
-        translationSection.style.opacity = '1';
-        translationSection.style.transform = 'translateY(0)';
+        uploadSection.style.display = 'none';
+        uploadSection.style.opacity = '1';
+        uploadSection.style.transform = 'translateY(0)';
     }, 400);
 }
 
-async function enableCamera() {
-    try {
-        showLoading('Accessing camera...');
-        
-        stream = await navigator.mediaDevices.getUserMedia({ 
-            video: { 
-                width: { ideal: 640 },
-                height: { ideal: 480 },
-                facingMode: 'user'
-            } 
-        });
-        
-        videoFeed.srcObject = stream;
-        videoFeed.style.display = 'block';
-        cameraPlaceholder.style.display = 'none';
-        
-        hideLoading();
-        showToast('Camera enabled successfully!', 'success');
-        
-        // Initialize canvas for frame capture
-        canvas.width = videoFeed.videoWidth;
-        canvas.height = videoFeed.videoHeight;
-        
-    } catch (error) {
-        hideLoading();
-        showToast('Failed to access camera. Please check permissions.', 'error');
-        console.error('Camera access error:', error);
+// Video Upload Functions
+function handleVideoSelection(event) {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('video/')) {
+        selectedVideo = file;
+        displayVideoPreview(file);
+        showToast('Video selected successfully!', 'success');
+    } else {
+        showToast('Please select a valid video file.', 'error');
     }
+}
+
+function displayVideoPreview(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        uploadedVideo.src = e.target.result;
+        videoFileName.textContent = file.name;
+        videoFileSize.textContent = formatFileSize(file.size);
+        
+        uploadArea.style.display = 'none';
+        videoPreview.style.display = 'block';
+        uploadBtn.style.display = 'inline-flex';
+        changeVideoBtn.style.display = 'inline-flex';
+    };
+    reader.readAsDataURL(file);
+}
+
+function handleVideoUpload() {
+    if (!selectedVideo) {
+        showToast('Please select a video first!', 'warning');
+        return;
+    }
+    
+    isProcessing = true;
+    uploadBtn.disabled = true;
+    uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    
+    showLoading('Processing ASL video...');
+    
+    // Simulate processing delay
+    setTimeout(() => {
+        hideLoading();
+        isProcessing = false;
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload & Translate';
+        
+        // Simulate translation result
+        updateTranslationResult("Hello! This is a sample ASL translation result.");
+        showToast('Video processed successfully!', 'success');
+    }, 3000);
+}
+
+function resetVideoSelection() {
+    selectedVideo = null;
+    videoFileInput.value = '';
+    uploadArea.style.display = 'block';
+    videoPreview.style.display = 'none';
+    uploadBtn.style.display = 'none';
+    changeVideoBtn.style.display = 'none';
+    
+    // Reset translation result
+    translationResult.innerHTML = `
+        <div class="placeholder-text">
+            <i class="fas fa-comments"></i>
+            <p>Your translation will appear here</p>
+        </div>
+    `;
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0 && files[0].type.startsWith('video/')) {
+        videoFileInput.files = files;
+        handleVideoSelection({ target: { files: files } });
+    } else {
+        showToast('Please drop a valid video file.', 'error');
+    }
+}
+
+function handleDragLeave(e) {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
 function stopCamera() {
@@ -451,25 +589,19 @@ function updateActiveNav() {
 }
 
 function handleKeyboardShortcuts(e) {
-    // Ctrl/Cmd + Enter to start translation
+    // Ctrl/Cmd + Enter to upload video
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
-        if (translationSection.style.display !== 'none') {
-            toggleTranslation();
+        if (uploadSection.style.display !== 'none') {
+            handleVideoUpload();
         }
     }
     
-    // Escape to close translation interface
+    // Escape to close upload interface
     if (e.key === 'Escape') {
-        if (translationSection.style.display !== 'none') {
-            hideTranslationInterface();
+        if (uploadSection.style.display !== 'none') {
+            hideUploadInterface();
         }
-    }
-    
-    // Space to pause/resume
-    if (e.key === ' ' && translationSection.style.display !== 'none') {
-        e.preventDefault();
-        togglePause();
     }
 }
 
@@ -517,7 +649,7 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe elements for animation
 document.addEventListener('DOMContentLoaded', () => {
-    const animatedElements = document.querySelectorAll('.feature-card, .translation-interface');
+    const animatedElements = document.querySelectorAll('.feature-card, .video-upload-interface');
     animatedElements.forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';

@@ -306,8 +306,8 @@ body {
     66% { transform: translateY(10px) rotate(-5deg); }
 }
 
-/* Translation Interface */
-.translation-interface {
+/* Video Upload Interface */
+.video-upload-interface {
     background: var(--bg-secondary);
     border-radius: 20px;
     padding: 2rem;
@@ -358,11 +358,97 @@ body {
     background: var(--bg-tertiary);
 }
 
-.translation-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.upload-container {
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
     margin-bottom: 2rem;
+}
+
+.upload-area {
+    background: var(--bg-primary);
+    border: 3px dashed var(--border-color);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-area:hover {
+    border-color: var(--primary-color);
+    background: var(--bg-secondary);
+    transform: translateY(-2px);
+}
+
+.upload-area.dragover {
+    border-color: var(--primary-color);
+    background: var(--bg-secondary);
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.upload-area h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.upload-area p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.file-types {
+    display: inline-block;
+    background: var(--bg-tertiary);
+    color: var(--text-light);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.video-preview {
+    background: var(--bg-primary);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+}
+
+.video-preview video {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-md);
+}
+
+.video-info h4 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.video-info p {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.upload-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
 }
 
 .camera-section {
@@ -680,8 +766,12 @@ body {
         font-size: 2.5rem;
     }
     
-    .translation-container {
-        grid-template-columns: 1fr;
+    .upload-container {
+        gap: 1.5rem;
+    }
+    
+    .upload-area {
+        padding: 2rem 1.5rem;
     }
     
     .hero-buttons {
