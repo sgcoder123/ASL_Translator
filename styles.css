@@ -242,6 +242,16 @@ body {
     transform: translateY(-2px);
 }
 
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 6px;
+}
+
+.nav .btn {
+    margin-left: 0.5rem;
+}
+
 .hero-visual {
     display: flex;
     justify-content: center;
@@ -679,6 +689,10 @@ body {
     }
     
     .nav {
+        display: none;
+    }
+    
+    .nav .btn {
         display: none;
     }
     

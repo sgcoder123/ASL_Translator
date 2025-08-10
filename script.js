@@ -1,6 +1,8 @@
 // DOM Elements
 const startBtn = document.getElementById('startBtn');
-const demoBtn = document.getElementById('demoBtn');
+const loginBtn = document.getElementById('loginBtn');
+const signupBtn = document.getElementById('signupBtn');
+
 const translationSection = document.getElementById('translationSection');
 const closeBtn = document.getElementById('closeBtn');
 const enableCameraBtn = document.getElementById('enableCameraBtn');
@@ -60,10 +62,17 @@ function initializeEventListeners() {
         showToast('Translation interface opened!', 'success');
     });
 
-    // Demo button
-    demoBtn.addEventListener('click', () => {
-        showDemo();
+    // Login button
+    loginBtn.addEventListener('click', () => {
+        showToast('Login functionality coming soon!', 'info');
     });
+
+    // Signup button
+    signupBtn.addEventListener('click', () => {
+        showToast('Sign up functionality coming soon!', 'info');
+    });
+
+
 
     // Close translation interface
     closeBtn.addEventListener('click', () => {
@@ -375,14 +384,7 @@ function saveTranslation() {
     }
 }
 
-function showDemo() {
-    showToast('Demo mode activated!', 'info');
-    
-    // Simulate a demo translation
-    setTimeout(() => {
-        updateTranslationResult("Hello! This is a demo of the ASL translator.");
-    }, 1000);
-}
+
 
 function showLoading(message = 'Processing...') {
     loadingOverlay.querySelector('p').textContent = message;
