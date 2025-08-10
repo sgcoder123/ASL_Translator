@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASL Translator - Bridge the Communication Gap</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-hands"></i>
+                </div>
+                <h1>ASL Translator</h1>
+            </div>
+            <nav class="nav">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#help" class="nav-link">Help</a>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h2 class="hero-title">Bridge the Communication Gap</h2>
+                    <p class="hero-subtitle">Transform American Sign Language into English text with our advanced AI-powered translator</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" id="startBtn">
+                            <i class="fas fa-play"></i>
+                            Start Translation
+                        </button>
+                        <button class="btn btn-secondary" id="demoBtn">
+                            <i class="fas fa-eye"></i>
+                            View Demo
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-hands">
+                        <div class="hand hand-1">🤟</div>
+                        <div class="hand hand-2">✋</div>
+                        <div class="hand hand-3">👌</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Translation Interface -->
+            <section class="translation-interface" id="translationSection" style="display: none;">
+                <div class="interface-header">
+                    <h3>Live Translation</h3>
+                    <button class="close-btn" id="closeBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="translation-container">
+                    <!-- Camera/Video Feed -->
+                    <div class="camera-section">
+                        <div class="camera-placeholder" id="cameraPlaceholder">
+                            <div class="camera-icon">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <p>Camera Feed</p>
+                            <button class="btn btn-primary" id="enableCameraBtn">
+                                <i class="fas fa-video"></i>
+                                Enable Camera
+                            </button>
+                        </div>
+                        <video id="videoFeed" autoplay muted style="display: none;"></video>
+                        <canvas id="canvas" style="display: none;"></canvas>
+                    </div>
+
+                    <!-- Translation Controls -->
+                    <div class="controls-section">
+                        <div class="control-group">
+                            <label for="translationMode">Translation Mode</label>
+                            <select id="translationMode" class="select-input">
+                                <option value="realtime">Real-time</option>
+                                <option value="capture">Capture & Translate</option>
+                                <option value="upload">Upload Video</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="languagePreference">Language Preference</label>
+                            <select id="languagePreference" class="select-input">
+                                <option value="en-us">English (US)</option>
+                                <option value="en-uk">English (UK)</option>
+                                <option value="en-au">English (Australia)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-buttons">
+                            <button class="btn btn-primary" id="translateBtn">
+                                <i class="fas fa-language"></i>
+                                Translate
+                            </button>
+                            <button class="btn btn-secondary" id="pauseBtn">
+                                <i class="fas fa-pause"></i>
+                                Pause
+                            </button>
+                            <button class="btn btn-outline" id="resetBtn">
+                                <i class="fas fa-redo"></i>
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Translation Results -->
+                <div class="results-section">
+                    <div class="result-card">
+                        <h4>Translation Result</h4>
+                        <div class="result-content" id="translationResult">
+                            <div class="placeholder-text">
+                                <i class="fas fa-comments"></i>
+                                <p>Your translation will appear here</p>
+                            </div>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn btn-outline" id="copyBtn">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                            <button class="btn btn-outline" id="shareBtn">
+                                <i class="fas fa-share"></i>
+                                Share
+                            </button>
+                            <button class="btn btn-outline" id="saveBtn">
+                                <i class="fas fa-save"></i>
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features">
+                <h3>Why Choose Our ASL Translator?</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4>Real-time Translation</h4>
+                        <p>Instant ASL to English conversion with minimal latency</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h4>AI-Powered</h4>
+                        <p>Advanced machine learning for accurate sign recognition</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h4>Mobile Friendly</h4>
+                        <p>Works seamlessly on all devices and screen sizes</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Privacy First</h4>
+                        <p>Your data stays local and secure</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>ASL Translator</h4>
+                    <p>Bridging communication gaps through technology</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="#home">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#help">Help</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ASL Translator. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="fas fa-info-circle"></i>
+            <span class="toast-message">Message here</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
