@@ -1,225 +1,227 @@
-# ASL-English-Translator
+# ASL Translator with MoviNet and T5
 
-A beautiful, fluid, and creative web-based American Sign Language (ASL) to English translator with a modern UI/UX design.
+A powerful ASL (American Sign Language) translation system that combines MoviNet for video understanding, MediaPipe for hand detection, and T5 for natural language translation.
 
-## ✨ Features
+## Features
 
-### 🎨 **Creative & Fluid Design**
-- **Modern UI/UX**: Clean, intuitive interface with smooth animations
-- **Responsive Design**: Works seamlessly on all devices and screen sizes
-- **Fluid Animations**: Smooth transitions, floating elements, and interactive feedback
-- **Gradient Design**: Beautiful color schemes with modern gradients
-- **Interactive Elements**: Hover effects, smooth scrolling, and dynamic content
+- **MoviNet Integration**: Advanced video understanding and temporal feature extraction
+- **MediaPipe Hand Detection**: Real-time hand landmark detection and tracking
+- **T5 Translation Model**: Pre-trained language model for ASL to English translation
+- **Real-time Processing**: Upload videos or process live camera feed
+- **Modern Web Interface**: Beautiful, responsive UI with drag-and-drop support
+- **Multi-format Support**: MP4, AVI, MOV, WebM, and MKV video formats
 
-### 🚀 **Core Functionality**
-- **Real-time Translation**: Live ASL to English conversion
-- **Camera Integration**: Built-in camera access for sign language input
-- **Multiple Modes**: Real-time, capture & translate, and upload video options
-- **Language Preferences**: Support for different English variants (US, UK, Australia)
-- **Translation Controls**: Start, pause, reset, and stop functionality
+## Architecture
 
-### 🛠 **User Experience**
-- **Intuitive Controls**: Easy-to-use buttons and navigation
-- **Toast Notifications**: Real-time feedback and status updates
-- **Loading States**: Visual feedback during processing
-- **Keyboard Shortcuts**: Quick access to common functions
-- **Demo Mode**: Try the interface without camera access
-
-### 📱 **Technical Features**
-- **Progressive Web App**: Modern web technologies
-- **Camera API**: Secure camera access with permissions
-- **Canvas Integration**: Frame capture for processing
-- **Responsive Grid**: Adaptive layout for all screen sizes
-- **Cross-browser Support**: Works on all modern browsers
-
-## 🎯 **Use Cases**
-
-- **Educational Institutions**: Teaching ASL and English
-- **Healthcare**: Communication between medical staff and deaf patients
-- **Business**: Inclusive workplace communication
-- **Personal Use**: Learning and practicing ASL
-- **Accessibility**: Breaking communication barriers
-
-## 🚀 **Getting Started**
-
-### Prerequisites
-- Modern web browser with camera support
-- Camera permissions enabled
-- Python backend (for actual ASL processing)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/ASL_Translator.git
-   cd ASL_Translator
-   ```
-
-2. **Open the application**
-   - Simply open `index.html` in your web browser
-   - Or serve it using a local web server:
-     ```bash
-     # Using Python 3
-     python -m http.server 8000
-     
-     # Using Node.js
-     npx serve .
-     
-     # Using PHP
-     php -S localhost:8000
-     ```
-
-3. **Access the application**
-   - Navigate to `http://localhost:8000` in your browser
-   - Allow camera permissions when prompted
-
-## 🔧 **Integration with Python Backend**
-
-The frontend is designed to work seamlessly with Python backend services. Here's how to integrate:
-
-### **API Endpoints to Implement**
-
-```python
-# Example Flask/FastAPI endpoints
-
-@app.route('/api/translate', methods=['POST'])
-def translate_asl():
-    # Receive video frame/image data
-    # Process using your ASL recognition model
-    # Return English translation
-    pass
-
-@app.route('/api/process-frame', methods=['POST'])
-def process_frame():
-    # Real-time frame processing
-    # Return immediate results
-    pass
-
-@app.route('/api/upload-video', methods=['POST'])
-def upload_video():
-    # Handle video file uploads
-    # Process and return translation
-    pass
+```
+Frontend (HTML/CSS/JS) → Backend (Flask) → AI Models
+                                    ├── MoviNet (Video Understanding)
+                                    ├── MediaPipe (Hand Detection)
+                                    └── T5 (Language Translation)
 ```
 
-### **Data Flow**
+## Prerequisites
 
-1. **Frontend captures video frames** using HTML5 Canvas
-2. **Frames are sent to Python backend** via HTTP requests
-3. **Python processes frames** using your ASL recognition model
-4. **Results are returned** to frontend for display
-5. **Real-time updates** provide continuous translation
+- Python 3.8+
+- CUDA-compatible GPU (optional, for faster processing)
+- 4GB+ RAM
+- 2GB+ free disk space
 
-### **Recommended Python Packages**
+## Installation
+
+### 1. Clone the Repository
 
 ```bash
-# Core packages for ASL recognition
-pip install opencv-python
-pip install mediapipe
-pip install tensorflow
-pip install numpy
-pip install flask  # or fastapi
-
-# Additional packages for enhanced functionality
-pip install pillow
-pip install scikit-learn
-pip install pandas
+git clone https://github.com/yourusername/ASL_Translator.git
+cd ASL_Translator
 ```
 
-## 🎨 **Customization**
+### 2. Backend Setup
 
-### **Colors and Themes**
-The application uses CSS custom properties for easy theming:
+```bash
+cd backend
 
-```css
-:root {
-    --primary-color: #6366f1;
-    --secondary-color: #8b5cf6;
-    --accent-color: #06b6d4;
-    /* Customize these values to match your brand */
-}
+# Install dependencies
+pip install -r requirements.txt
+
+# Run setup script (downloads models and creates directories)
+python setup.py
+
+# Start the backend server
+python main.py
 ```
 
-### **Adding New Features**
-- **New Translation Modes**: Add options to the mode selector
-- **Additional Languages**: Extend language preferences
-- **Custom Animations**: Modify CSS animations and transitions
-- **Enhanced Controls**: Add new buttons and functionality
+The backend will be available at `http://localhost:5000`
 
-## 📱 **Responsive Design**
+### 3. Frontend Setup
 
-The application is fully responsive and works on:
-- **Desktop**: Full-featured interface with all controls
-- **Tablet**: Optimized layout for medium screens
-- **Mobile**: Touch-friendly interface with simplified controls
-- **All Orientations**: Portrait and landscape support
+```bash
+cd frontend
 
-## 🔒 **Privacy & Security**
+# Open index.html in your web browser
+# Or serve with a local server:
+python -m http.server 8000
+```
 
-- **Local Processing**: Camera data stays on your device
-- **No Data Storage**: No personal information is stored
-- **Secure Permissions**: Camera access requires explicit user consent
-- **HTTPS Ready**: Secure communication for production deployment
+## Usage
 
-## 🚀 **Performance Features**
+### Video Upload
 
-- **Optimized Animations**: Hardware-accelerated CSS transitions
-- **Efficient Rendering**: Canvas-based video processing
-- **Lazy Loading**: Content loads as needed
-- **Smooth Scrolling**: Optimized scroll performance
-- **Memory Management**: Proper cleanup of camera streams
+1. Open the web interface
+2. Click "Start Translating"
+3. Drag and drop your ASL video or click to browse
+4. Wait for AI processing (MoviNet + MediaPipe + T5)
+5. View the English translation
 
-## 🛠 **Browser Support**
+### Supported Video Formats
 
-- **Chrome**: Full support (recommended)
-- **Firefox**: Full support
-- **Safari**: Full support
-- **Edge**: Full support
-- **Mobile Browsers**: iOS Safari, Chrome Mobile
+- MP4
+- AVI
+- MOV
+- WebM
+- MKV
 
-## 📝 **Development**
+### File Size Limits
 
-### **File Structure**
+- Maximum file size: 100MB
+- Recommended resolution: 720p or higher
+- Recommended duration: 5-60 seconds
+
+## API Endpoints
+
+### Health Check
+```
+GET /health
+```
+
+### Upload Video
+```
+POST /upload
+Content-Type: multipart/form-data
+Body: video file
+```
+
+### Model Status
+```
+GET /models/status
+```
+
+### MoviNet Information
+```
+GET /movinet/info
+```
+
+## Model Details
+
+### MoviNet
+- **Purpose**: Video understanding and temporal feature extraction
+- **Input**: Video frames (3, 16, 224, 224)
+- **Features**: Motion intensity, temporal consistency, spatial complexity
+- **Output**: Enhanced ASL gesture analysis
+
+### MediaPipe Hands
+- **Purpose**: Hand landmark detection and tracking
+- **Features**: 21 3D landmarks per hand
+- **Confidence**: 70% detection, 50% tracking thresholds
+- **Output**: Hand position and movement data
+
+### T5 Model
+- **Purpose**: ASL description to English translation
+- **Model**: t5-base (12-layer, 768-hidden, 12-heads)
+- **Input**: ASL gesture descriptions
+- **Output**: Natural English text
+
+## Development
+
+### Project Structure
+
 ```
 ASL_Translator/
-├── index.html          # Main HTML structure
-├── styles.css          # CSS styles and animations
-├── script.js           # JavaScript functionality
-└── README.md           # Project documentation
+├── backend/
+│   ├── main.py                 # Main Flask application
+│   ├── movinet_integration.py  # MoviNet video processor
+│   ├── requirements.txt        # Python dependencies
+│   ├── setup.py               # Setup and model download script
+│   └── uploads/               # Temporary video storage
+├── frontend/
+│   ├── index.html             # Main web interface
+│   ├── script.js              # Frontend logic
+│   └── styles.css             # Styling
+└── README.md                  # This file
 ```
 
-### **Key Components**
-- **HTML**: Semantic structure with accessibility features
-- **CSS**: Modern styling with CSS Grid, Flexbox, and animations
-- **JavaScript**: ES6+ features with modern browser APIs
-- **Responsive**: Mobile-first design approach
+### Adding Custom Models
 
-## 🤝 **Contributing**
+1. **Custom T5 Model**: Update `load_t5_model()` in `main.py`
+2. **Custom MoviNet**: Extend `MoviNetASLProcessor` class
+3. **Custom Hand Detection**: Modify MediaPipe configuration
+
+### Performance Optimization
+
+- **GPU Acceleration**: Enable CUDA for PyTorch models
+- **Batch Processing**: Process multiple frames simultaneously
+- **Model Quantization**: Use INT8 models for faster inference
+- **Frame Sampling**: Reduce frames for longer videos
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Models Not Loading**
+   - Check internet connection for model downloads
+   - Verify sufficient disk space
+   - Check Python version compatibility
+
+2. **Video Processing Errors**
+   - Ensure video format is supported
+   - Check file size limits
+   - Verify video file integrity
+
+3. **Performance Issues**
+   - Enable GPU acceleration if available
+   - Reduce video resolution
+   - Close other applications
+
+### Logs
+
+Check backend logs for detailed error information:
+```bash
+cd backend
+python main.py
+```
+
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test thoroughly
+4. Add tests if applicable
 5. Submit a pull request
 
-## 📄 **License**
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 **Acknowledgments**
+## Acknowledgments
 
-- **Font Awesome** for beautiful icons
-- **Google Fonts** for typography
-- **Modern CSS** techniques and best practices
-- **Web APIs** for camera and media access
+- **MoviNet**: Google Research for video understanding
+- **MediaPipe**: Google for hand detection
+- **T5**: Google Research for language models
+- **OpenCV**: Computer vision library
+- **PyTorch**: Deep learning framework
 
-## 📞 **Support**
+## Support
 
-For questions, issues, or contributions:
+For questions and support:
 - Create an issue on GitHub
-- Contact the development team
-- Check the documentation
+- Check the troubleshooting section
+- Review the API documentation
 
----
+## Roadmap
 
-**Built with ❤️ for inclusive communication and accessibility**
+- [ ] Real-time camera feed processing
+- [ ] Support for more sign languages
+- [ ] Mobile app development
+- [ ] Cloud deployment options
+- [ ] Advanced gesture recognition
+- [ ] Multi-person signing support

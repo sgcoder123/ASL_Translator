@@ -1,0 +1,17 @@
+# Backend dependencies (macOS Apple Silicon, Python 3.11)
+# If you are on Intel macOS or Linux/Windows, adjust TensorFlow packages accordingly.
+
+Flask==3.0.3
+Flask-Cors==4.0.1
+Werkzeug==3.0.3
+
+numpy==1.26.4
+opencv-python==4.10.0.84
+Pillow==10.4.0
+transformers==4.43.3
+
+# TensorFlow for Apple Silicon (Metal acceleration)
+tensorflow-macos==2.16.1
+tensorflow-metal==1.1.0
+tensorflow-hub==0.16.1
+tf-models-official==2.16.1
