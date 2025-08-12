@@ -489,7 +489,7 @@ function shareTranslation() {
     if (text && text !== 'Your translation will appear here') {
         if (navigator.share) {
             navigator.share({
-                title: 'ASL Translation',
+                title: 'Signbridge Translation',
                 text: text,
                 url: window.location.href
             }).then(() => {
@@ -512,7 +512,7 @@ function saveTranslation() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'asl-translation.txt';
+        a.download = 'signbridge-translation.txt';
         a.click();
         URL.revokeObjectURL(url);
         
