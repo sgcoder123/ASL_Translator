@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signbridge Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-background">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+        </div>
+    </div>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-hands"></i>
+                </div>
+                <h1>Signbridge</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="btn btn-outline btn-small">Home</a>
+                <a href="dashboard.html" class="btn btn-primary btn-small">Dashboard</a>
+            </nav>
+        </header>
+        <main class="main-content">
+            <section class="dashboard-section">
+                <div class="dashboard-header">
+                    <h2 class="dashboard-title gradient-text"><i class="fas fa-table"></i> Dashboard</h2>
+                </div>
+                <div id="dashboardContent">
+                    <div class="dashboard-empty">
+                        <i class="fas fa-video-slash"></i>
+                        <p>Nothing is here yet</p>
+                        <a href="record.html" class="btn btn-primary btn-large" id="createNewBtn">
+                            <i class="fas fa-plus"></i> Create New
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Signbridge</h4>
+                    <p>Bridging communication gaps through technology</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="#">Features</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Signbridge. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+    <script src="dashboard.js"></script>
+</body>
+</html>

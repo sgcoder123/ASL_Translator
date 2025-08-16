@@ -29,14 +29,8 @@
                 <h1>Signbridge</h1>
             </div>
             <nav class="nav">
-                <button class="btn btn-outline btn-small" id="loginBtn">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Log In
-                </button>
-                <button class="btn btn-primary btn-small" id="signupBtn">
-                    <i class="fas fa-user-plus"></i>
-                    Sign Up
-                </button>
+                <a href="index.html" class="btn btn-outline btn-small">Home</a>
+                <a href="dashboard.html" class="btn btn-primary btn-small">Dashboard</a>
             </nav>
         </header>
 
@@ -51,13 +45,13 @@
                     <h2 class="hero-title">
                         <span class="gradient-text">Bridge</span> the Communication Gap
                     </h2>
-                    <p class="hero-subtitle">Transform American Sign Language into English text with our advanced AI-powered translator. Upload your ASL videos and get instant, accurate translations.</p>
+                    <p class="hero-subtitle">Welcome to Signbridge! Manage and create your ASL video translations from your personal dashboard.</p>
                     <div class="hero-buttons">
-                        <button class="btn btn-primary btn-large" id="startBtn">
-                            <i class="fas fa-upload"></i>
-                            <span>Start Translating</span>
+                        <a href="dashboard.html" class="btn btn-primary btn-large" id="dashboardBtn">
+                            <i class="fas fa-table"></i>
+                            <span>Go to Dashboard</span>
                             <div class="btn-glow"></div>
-                        </button>
+                        </a>
                         <div class="hero-stats">
                             <div class="stat">
                                 <span class="stat-number">99.2%</span>
@@ -87,7 +81,8 @@
                             <div class="line line-2"></div>
                             <div class="line line-3"></div>
                         </div>
-                        <div class="ai-brain">
+                        <!-- Move ai-brain to bottom right corner -->
+                        <div class="ai-brain" style="position: absolute; bottom: 24px; right: 24px; top: auto; left: auto;">
                             <i class="fas fa-brain"></i>
                         </div>
                     </div>
@@ -95,111 +90,7 @@
             </section>
 
             <!-- Video Upload Interface -->
-            <section class="video-upload-interface" id="uploadSection" style="display: none;">
-                <div class="interface-container">
-                    <div class="interface-header">
-                        <div class="header-content">
-                            <h3>Upload Your ASL Video</h3>
-                            <p>Drop your video file or click to browse. We support MP4, AVI, MOV, and WebM formats.</p>
-                        </div>
-                        <button class="close-btn" id="closeBtn">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="upload-container">
-                        <!-- Video Upload Area -->
-                        <div class="upload-area" id="uploadArea">
-                            <div class="upload-content">
-                                <div class="upload-icon">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <div class="upload-pulse"></div>
-                                </div>
-                                <h4>Drop your ASL video here</h4>
-                                <p>or click to browse files</p>
-                                <div class="file-types">
-                                    <span class="file-type">MP4</span>
-                                    <span class="file-type">AVI</span>
-                                    <span class="file-type">MOV</span>
-                                    <span class="file-type">WebM</span>
-                                </div>
-                                <input type="file" id="videoFileInput" accept="video/*" style="display: none;">
-                            </div>
-                            <div class="upload-overlay"></div>
-                        </div>
-
-                        <!-- Video Preview -->
-                        <div class="video-preview" id="videoPreview" style="display: none;">
-                            <div class="preview-header">
-                                <h4>Video Preview</h4>
-                                <button class="btn btn-outline btn-small" id="changeVideoBtn">
-                                    <i class="fas fa-exchange-alt"></i>
-                                    Change
-                                </button>
-                            </div>
-                            <div class="video-container">
-                                <video id="uploadedVideo" controls>
-                                    Your browser does not support the video tag.
-                                </video>
-                                <div class="video-info">
-                                    <div class="info-item">
-                                        <i class="fas fa-file-video"></i>
-                                        <span id="videoFileName">Video File</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <i class="fas fa-weight-hanging"></i>
-                                        <span id="videoFileSize">File size</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Upload Controls -->
-                        <div class="upload-controls" id="uploadControls" style="display: none;">
-                            <button class="btn btn-primary btn-large" id="uploadBtn">
-                                <i class="fas fa-upload"></i>
-                                <span>Upload & Translate</span>
-                                <div class="btn-glow"></div>
-                            </button>
-                            <div class="upload-info">
-                                <i class="fas fa-info-circle"></i>
-                                <span>Your video will be processed securely and privately</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Translation Results -->
-                    <div class="results-section" id="resultsSection" style="display: none;">
-                        <div class="result-header">
-                            <h4>Translation Result</h4>
-                            <div class="result-status">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Translation Complete</span>
-                            </div>
-                        </div>
-                        <div class="result-content" id="translationResult">
-                            <div class="placeholder-text">
-                                <i class="fas fa-comments"></i>
-                                <p>Your translation will appear here</p>
-                            </div>
-                        </div>
-                        <div class="result-actions">
-                            <button class="btn btn-outline" id="copyBtn">
-                                <i class="fas fa-copy"></i>
-                                Copy
-                            </button>
-                            <button class="btn btn-outline" id="shareBtn">
-                                <i class="fas fa-share"></i>
-                                Share
-                            </button>
-                            <button class="btn btn-outline" id="saveBtn">
-                                <i class="fas fa-save"></i>
-                                Save
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <!-- Removed upload interface from main page -->
 
             <!-- Features Section -->
             <section class="features">

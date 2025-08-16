@@ -1129,3 +1129,207 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-dark);
 }
+
+/* Dashboard Section */
+.dashboard-section {
+    background: var(--bg-primary);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    padding: 3rem 2rem;
+    margin: 3rem 0;
+    animation: fadeInUp 0.8s ease-out;
+}
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.dashboard-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.dashboard-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 0 2rem 0;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    gap: 1.5rem;
+    min-height: 200px;
+}
+.dashboard-empty i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+.dashboard-empty p {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+.dashboard-empty .btn {
+    margin-top: 1rem;
+}
+
+/* Navbar active state for dashboard */
+.nav .btn.active, .nav .btn[aria-current="page"] {
+    background: var(--gradient-primary);
+    color: #fff;
+    box-shadow: var(--shadow-md);
+}
+
+/* Record Page Styles */
+.record-section {
+    background: var(--bg-primary);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    padding: 3rem 2rem;
+    margin: 3rem 0;
+    animation: fadeInUp 0.8s ease-out;
+}
+.record-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.record-header h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+.record-instructions {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+.record-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+.camera-container {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 16/9;
+    background: var(--bg-tertiary);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+.camera-feed {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    background: #000;
+}
+.camera-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    border-radius: 16px;
+}
+.record-controls {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+}
+.recording-status {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    min-width: 120px;
+}
+@media (max-width: 600px) {
+    .camera-container {
+        max-width: 100%;
+        aspect-ratio: 16/9;
+    }
+    .record-section {
+        padding: 1.5rem 0.5rem;
+    }
+}
+
+/* Dashboard Video List Styles */
+.dashboard-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+.dashboard-card {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    padding: 1.5rem 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    transition: box-shadow 0.2s;
+}
+.dashboard-card:hover {
+    box-shadow: var(--shadow-xl);
+}
+.dashboard-card-video {
+    width: 100%;
+    max-width: 320px;
+    margin-bottom: 1rem;
+}
+.dashboard-card-video video {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    background: #000;
+}
+.dashboard-card-info {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 0.5rem;
+}
+.dashboard-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+.dashboard-card-date {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.dashboard-card-menu {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+.menu-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+}
+.menu-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--primary-color);
+}
