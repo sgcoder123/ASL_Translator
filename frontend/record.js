@@ -50,49 +50,147 @@ function toggleRecording() {
 function startRecording() {
     if (!mediaStream) return;
     recordedChunks = [];
-    mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'video/webm' });
-    mediaRecorder.ondataavailable = function(e) {
-        if (e.data.size > 0) recordedChunks.push(e.data);
-    };
-    mediaRecorder.onstop = function() {
-        saveBtn.style.display = 'inline-flex';
-        recordBtn.innerHTML = '<i class="fas fa-circle"></i> Start Recording';
-        recordingStatus.textContent = 'Recording stopped.';
-        isRecording = false;
-    };
-    mediaRecorder.start();
-    isRecording = true;
-    recordBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Recording';
-    saveBtn.style.display = 'none';
-    recordingStatus.textContent = 'Recording...';
+    
+    try {
+        // Use the most compatible MIME type
+        let mimeType = 'video/webm';
+        if (!MediaRecorder.isTypeSupported(mimeType)) {
+            mimeType = 'video/mp4';
+        }
+        
+        mediaRecorder = new MediaRecorder(mediaStream, { mimeType: mimeType });
+        
+        mediaRecorder.ondataavailable = function(e) {
+            if (e.data.size > 0) {
+                recordedChunks.push(e.data);
+                console.log('Data chunk received:', e.data.size, 'bytes');
+            }
+        };
+        
+        mediaRecorder.onstop = function() {
+            console.log('Recording stopped. Total chunks:', recordedChunks.length);
+            if (recordedChunks.length > 0) {
+                saveBtn.style.display = 'inline-flex';
+                recordingStatus.textContent = 'Recording stopped. Ready to save.';
+            } else {
+                recordingStatus.textContent = 'Recording failed. Please try again.';
+            }
+            recordBtn.innerHTML = '<i class="fas fa-circle"></i> Start Recording';
+            isRecording = false;
+        };
+        
+        mediaRecorder.start();
+        isRecording = true;
+        recordBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Recording';
+        saveBtn.style.display = 'none';
+        recordingStatus.textContent = 'Recording...';
+        
+    } catch (error) {
+        console.error('Error starting recording:', error);
+        recordingStatus.textContent = 'Error starting recording. Please try again.';
+    }
 }
 
 function stopRecording() {
     if (mediaRecorder && isRecording) {
+        console.log('Stopping recording...');
         mediaRecorder.stop();
+        // Don't stop the media stream tracks here - keep the camera active
     }
 }
 
 function saveVideo() {
-    if (recordedChunks.length === 0) return;
-    const blob = new Blob(recordedChunks, { type: 'video/webm' });
-    const reader = new FileReader();
-    reader.onloadend = function() {
-        const base64data = reader.result;
-        // Save to localStorage as a dashboard entry
-        let videos = JSON.parse(localStorage.getItem('dashboardVideos') || '[]');
-        const id = 'vid_' + Date.now();
-        videos.push({
-            id,
-            name: `ASL Recording ${new Date().toLocaleString()}`,
-            date: new Date().toLocaleString(),
-            video: base64data
-        });
-        localStorage.setItem('dashboardVideos', JSON.stringify(videos));
-        recordingStatus.textContent = 'Saved to dashboard! Redirecting...';
-        setTimeout(() => {
-            window.location.href = 'dashboard.html';
-        }, 1200);
-    };
-    reader.readAsDataURL(blob);
+    console.log('Save video called. Chunks:', recordedChunks.length);
+    
+    if (recordedChunks.length === 0) {
+        recordingStatus.textContent = 'No recording to save.';
+        return;
+    }
+    
+    // Show saving status
+    recordingStatus.textContent = 'Saving...';
+    saveBtn.disabled = true;
+    
+    try {
+        // Create blob with more flexible type handling
+        let blob;
+        try {
+            blob = new Blob(recordedChunks, { type: 'video/webm' });
+        } catch (blobError) {
+            console.log('WebM failed, trying generic video type');
+            blob = new Blob(recordedChunks, { type: 'video/*' });
+        }
+        
+        console.log('Blob created successfully:', blob.size, 'bytes');
+        
+        // Convert to base64
+        const reader = new FileReader();
+        
+        reader.onload = function() {
+            try {
+                const base64data = reader.result;
+                console.log('Video converted to base64, length:', base64data.length);
+                
+                // Save to localStorage
+                let videos = JSON.parse(localStorage.getItem('dashboardVideos') || '[]');
+                const id = 'vid_' + Date.now();
+                const videoEntry = {
+                    id,
+                    name: `ASL Recording ${new Date().toLocaleString()}`,
+                    date: new Date().toLocaleString(),
+                    video: base64data,
+                    size: blob.size
+                };
+                
+                videos.push(videoEntry);
+                localStorage.setItem('dashboardVideos', JSON.stringify(videos));
+                
+                console.log('Video saved to localStorage successfully');
+                recordingStatus.textContent = 'Saved to dashboard! Redirecting...';
+                
+                // Clear the recording data
+                recordedChunks = [];
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error in onload callback:', error);
+                recordingStatus.textContent = 'Error saving video. Please try again.';
+                saveBtn.disabled = false;
+            }
+        };
+        
+        reader.onerror = function(error) {
+            console.error('FileReader error:', error);
+            recordingStatus.textContent = 'Error reading video data. Please try again.';
+            saveBtn.disabled = false;
+        };
+        
+        reader.readAsDataURL(blob);
+        
+    } catch (error) {
+        console.error('Error in saveVideo function:', error);
+        recordingStatus.textContent = 'Error creating video. Please try again.';
+        saveBtn.disabled = false;
+    }
+}
+
+// Add cleanup function for when page is unloaded
+window.addEventListener('beforeunload', function() {
+    if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+    }
+});
+
+// Add debugging function
+function debugRecording() {
+    console.log('=== Recording Debug Info ===');
+    console.log('MediaStream:', mediaStream);
+    console.log('MediaRecorder:', mediaRecorder);
+    console.log('Is Recording:', isRecording);
+    console.log('Recorded Chunks:', recordedChunks.length);
+    console.log('Chunk sizes:', recordedChunks.map(chunk => chunk.size));
+    console.log('==========================');
 }

@@ -37,22 +37,27 @@
                     <p class="record-instructions">To get started, please allow camera access below.</p>
                 </div>
                 <div class="record-content">
-                    <div id="cameraContainer" class="camera-container">
-                        <video id="cameraFeed" autoplay playsinline muted class="camera-feed"></video>
-                        <div id="cameraOverlay" class="camera-overlay">
-                            <button class="btn btn-primary" id="startCameraBtn">
-                                <i class="fas fa-camera"></i> Enable Camera
+                    <div class="record-content-wrapper">
+                        <div id="cameraContainer" class="camera-container">
+                            <video id="cameraFeed" autoplay playsinline muted class="camera-feed"></video>
+                            <div id="cameraOverlay" class="camera-overlay">
+                                <button class="btn btn-primary" id="startCameraBtn">
+                                    <i class="fas fa-camera"></i> Enable Camera
+                                </button>
+                            </div>
+                        </div>
+                        <div class="record-controls" id="recordControls" style="display:none;">
+                            <button class="btn btn-primary btn-large" id="recordBtn">
+                                <i class="fas fa-circle"></i> Start Recording
+                            </button>
+                            <button class="btn btn-outline btn-large" id="saveBtn" style="display:none;">
+                                <i class="fas fa-save"></i> Save to Dashboard
+                            </button>
+                            <span id="recordingStatus" class="recording-status"></span>
+                            <button class="btn btn-outline btn-small" onclick="debugRecording()" style="margin-left: 1rem;">
+                                <i class="fas fa-bug"></i> Debug
                             </button>
                         </div>
-                    </div>
-                    <div class="record-controls" id="recordControls" style="display:none;">
-                        <button class="btn btn-primary btn-large" id="recordBtn">
-                            <i class="fas fa-circle"></i> Start Recording
-                        </button>
-                        <button class="btn btn-outline btn-large" id="saveBtn" style="display:none;">
-                            <i class="fas fa-save"></i> Save to Dashboard
-                        </button>
-                        <span id="recordingStatus" class="recording-status"></span>
                     </div>
                 </div>
             </section>
