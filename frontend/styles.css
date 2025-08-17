@@ -6,17 +6,17 @@
 }
 
 :root {
-    --primary-color: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #a5b4fc;
-    --secondary-color: #8b5cf6;
+    --primary-color: #1e40af;
+    --primary-dark: #1e3a8a;
+    --primary-light: #3b82f6;
+    --secondary-color: #0ea5e9;
     --accent-color: #06b6d4;
     --success-color: #10b981;
     --warning-color: #f59e0b;
     --error-color: #ef4444;
-    --text-primary: #1f2937;
-    --text-secondary: #6b7280;
-    --text-light: #9ca3af;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-light: #64748b;
     --bg-primary: #ffffff;
     --bg-secondary: #f8fafc;
     --bg-tertiary: #f1f5f9;
@@ -25,10 +25,10 @@
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    --gradient-secondary: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+    --gradient-accent: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    --gradient-hero: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #0ea5e9 100%);
 }
 
 body {
@@ -79,6 +79,7 @@ body {
     top: 10%;
     left: 10%;
     animation-delay: 0s;
+    background: var(--gradient-primary);
 }
 
 .shape-2 {
@@ -132,27 +133,23 @@ body {
 .logo {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .logo-icon {
-    width: 48px;
-    height: 48px;
-    background: var(--gradient-primary);
-    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 1.5rem;
-    animation: pulse 2s infinite;
-    box-shadow: var(--shadow-lg);
+    padding: 0.5rem;
 }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+.logo-image {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
 }
+
+
 
 .logo h1 {
     font-size: 1.75rem;
@@ -275,14 +272,16 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(99, 102, 241, 0.1);
-    color: var(--primary-color);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
+    background: rgba(30, 64, 175, 0.9);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 50px;
     font-size: 0.875rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
     animation: fadeInUp 0.8s ease-out 0.2s both;
+    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+    border: 2px solid rgba(59, 130, 246, 0.3);
 }
 
 .hero-title {
@@ -362,6 +361,7 @@ body {
     font-size: 3rem;
     position: absolute;
     animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(30, 64, 175, 0.3));
 }
 
 .hand-1 {
@@ -783,11 +783,13 @@ body {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    border: 2px solid transparent;
 }
 
 .feature-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-xl);
+    border-color: var(--primary-color);
 }
 
 .feature-icon {
@@ -833,10 +835,10 @@ body {
 
 /* Footer */
 .footer {
-    background: var(--bg-secondary);
+    background: var(--primary-color);
     padding: 3rem 0 1rem;
     margin-top: 4rem;
-    border-top: 1px solid var(--border-color);
+    color: white;
 }
 
 .footer-content {
@@ -849,13 +851,13 @@ body {
 .footer-section h4 {
     font-size: 1.125rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: white;
     margin-bottom: 1rem;
 }
 
 .footer-section p,
 .footer-section a {
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     display: block;
     margin-bottom: 0.5rem;
@@ -863,7 +865,7 @@ body {
 }
 
 .footer-section a:hover {
-    color: var(--primary-color);
+    color: white;
 }
 
 .social-links {
@@ -894,8 +896,8 @@ body {
 .footer-bottom {
     text-align: center;
     padding-top: 2rem;
-    border-top: 1px solid var(--border-color);
-    color: var(--text-secondary);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 /* Loading Overlay */
