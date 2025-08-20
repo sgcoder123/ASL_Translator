@@ -1245,6 +1245,26 @@ html {
     box-shadow: var(--shadow-md);
     overflow: hidden;
     margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.camera-container.recording {
+    background: white;
+    box-shadow: 0 0 0 4px var(--primary-color), var(--shadow-lg);
+    border: 2px solid var(--primary-color);
+    animation: recordingPulse 2s ease-in-out infinite;
+}
+
+@keyframes recordingPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 4px var(--primary-color), var(--shadow-lg);
+    }
+    50% {
+        box-shadow: 0 0 0 6px var(--primary-color), var(--shadow-lg);
+    }
+}
+.camera-container.recording .camera-feed {
+    border: 2px solid var(--primary-color);
 }
 .camera-feed {
     width: 100%;

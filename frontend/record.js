@@ -41,6 +41,14 @@ function enableCamera() {
 
 function toggleRecording() {
     if (!isRecording) {
+        // If there are unsaved chunks and we're starting a new recording, clear them
+        if (recordedChunks.length > 0 && !saveBtn.style.display.includes('none')) {
+            if (confirm('You have an unsaved recording. Start a new one anyway?')) {
+                resetRecordingState();
+            } else {
+                return;
+            }
+        }
         startRecording();
     } else {
         stopRecording();
@@ -49,6 +57,19 @@ function toggleRecording() {
 
 function startRecording() {
     if (!mediaStream) return;
+    
+    // Reset any existing recording state
+    if (mediaRecorder) {
+        try {
+            if (mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+        } catch (e) {
+            console.log('MediaRecorder already stopped');
+        }
+        mediaRecorder = null;
+    }
+    
     recordedChunks = [];
     
     try {
@@ -77,6 +98,12 @@ function startRecording() {
             }
             recordBtn.innerHTML = '<i class="fas fa-circle"></i> Start Recording';
             isRecording = false;
+            
+            // Remove recording visual indicator
+            const cameraContainer = document.getElementById('cameraContainer');
+            if (cameraContainer) {
+                cameraContainer.classList.remove('recording');
+            }
         };
         
         mediaRecorder.start();
@@ -84,6 +111,12 @@ function startRecording() {
         recordBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Recording';
         saveBtn.style.display = 'none';
         recordingStatus.textContent = 'Recording...';
+        
+        // Add recording visual indicator
+        const cameraContainer = document.getElementById('cameraContainer');
+        if (cameraContainer) {
+            cameraContainer.classList.add('recording');
+        }
         
     } catch (error) {
         console.error('Error starting recording:', error);
@@ -148,8 +181,8 @@ function saveVideo() {
                 console.log('Video saved to localStorage successfully');
                 recordingStatus.textContent = 'Saved to dashboard! Redirecting...';
                 
-                // Clear the recording data
-                recordedChunks = [];
+                // Reset recording state completely
+                resetRecordingState();
                 
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
@@ -177,20 +210,44 @@ function saveVideo() {
     }
 }
 
+// Add function to reset recording state
+function resetRecordingState() {
+    // Clear recorded chunks
+    recordedChunks = [];
+    
+    // Reset mediaRecorder
+    if (mediaRecorder) {
+        try {
+            if (mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+        } catch (e) {
+            console.log('MediaRecorder already stopped');
+        }
+        mediaRecorder = null;
+    }
+    
+    // Reset recording state
+    isRecording = false;
+    
+    // Remove recording visual indicator
+    const cameraContainer = document.getElementById('cameraContainer');
+    if (cameraContainer) {
+        cameraContainer.classList.remove('recording');
+    }
+    
+    // Reset UI
+    recordBtn.innerHTML = '<i class="fas fa-circle"></i> Start Recording';
+    saveBtn.style.display = 'none';
+    saveBtn.disabled = false;
+    recordingStatus.textContent = 'Ready to record';
+    
+    console.log('Recording state reset successfully');
+}
+
 // Add cleanup function for when page is unloaded
 window.addEventListener('beforeunload', function() {
     if (mediaStream) {
         mediaStream.getTracks().forEach(track => track.stop());
     }
 });
-
-// Add debugging function
-function debugRecording() {
-    console.log('=== Recording Debug Info ===');
-    console.log('MediaStream:', mediaStream);
-    console.log('MediaRecorder:', mediaRecorder);
-    console.log('Is Recording:', isRecording);
-    console.log('Recorded Chunks:', recordedChunks.length);
-    console.log('Chunk sizes:', recordedChunks.map(chunk => chunk.size));
-    console.log('==========================');
-}
