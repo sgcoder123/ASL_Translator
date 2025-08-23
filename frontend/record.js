@@ -26,6 +26,25 @@ document.addEventListener('DOMContentLoaded', function() {
     if (saveBtn) {
         saveBtn.addEventListener('click', saveVideo);
     }
+    
+    // Add a Translate button event listener
+    const translateBtn = document.getElementById('saveBtn');
+    if (translateBtn) {
+        translateBtn.addEventListener('click', async function() {
+            if (recordedChunks.length === 0) {
+                recordingStatus.textContent = 'No recording to translate.';
+                return;
+            }
+            // Create blob from recorded chunks
+            let blob;
+            try {
+                blob = new Blob(recordedChunks, { type: 'video/webm' });
+            } catch {
+                blob = new Blob(recordedChunks, { type: 'video/*' });
+            }
+            await uploadAndTranslateVideo(blob);
+        });
+    }
 });
 
 function enableCamera() {
@@ -164,8 +183,6 @@ function saveVideo() {
         reader.onload = function() {
             try {
                 const base64data = reader.result;
-                console.log('Video converted to base64, length:', base64data.length);
-                
                 // Save to localStorage
                 let videos = JSON.parse(localStorage.getItem('dashboardVideos') || '[]');
                 const id = 'vid_' + Date.now();
@@ -176,20 +193,14 @@ function saveVideo() {
                     video: base64data,
                     size: blob.size
                 };
-                
                 videos.push(videoEntry);
                 localStorage.setItem('dashboardVideos', JSON.stringify(videos));
-                
-                console.log('Video saved to localStorage successfully');
+                // Redirect to dashboard
                 recordingStatus.textContent = 'Saved to dashboard! Redirecting...';
-                
-                // Reset recording state completely
                 resetRecordingState();
-                
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
                 }, 1500);
-                
             } catch (error) {
                 console.error('Error in onload callback:', error);
                 recordingStatus.textContent = 'Error saving video. Please try again.';
@@ -247,29 +258,28 @@ function resetRecordingState() {
     console.log('Recording state reset successfully');
 }
 
-// New function to upload and translate video
+// Replace uploadAndTranslateVideo with PyScript call
 async function uploadAndTranslateVideo(videoBlob) {
+    // Create FormData for upload
+    const formData = new FormData();
+    formData.append('video', videoBlob, 'asl_recording.webm');
+
     try {
-        // Create FormData for upload
-        const formData = new FormData();
-        formData.append('video', videoBlob, 'asl_recording.webm');
-        
-        // Upload to backend
-        const response = await fetch(`${backendUrl}/upload`, {
+        recordingStatus.textContent = 'Uploading and processing...';
+        const response = await fetch(backendUrl + '/upload', {
             method: 'POST',
             body: formData
         });
-        
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.error || 'Upload failed');
         }
-        
-        return await response.json();
-        
+        const result = await response.json();
+        showTranslationResults(result);
+        recordingStatus.textContent = 'Translation complete!';
     } catch (error) {
         console.error('Error uploading video:', error);
-        throw error;
+        recordingStatus.textContent = 'Error processing video. Please try again.';
     }
 }
 
@@ -277,37 +287,33 @@ async function uploadAndTranslateVideo(videoBlob) {
 function showTranslationResults(result) {
     // Hide recording controls
     recordControls.style.display = 'none';
-    
+
     // Show translation results
     const translationResults = document.getElementById('translationResults');
     translationResults.style.display = 'block';
-    
-    // Update ASL recognition results
-    if (result.asl_recognition) {
-        document.getElementById('aslSequence').textContent = result.asl_recognition.sequence;
-        document.getElementById('aslConfidence').textContent = 
-            `Confidence: ${(result.asl_recognition.confidence * 100).toFixed(1)}%`;
-    }
-    
+
+    // Only show translation and suggestions
+    // Hide ASL recognition and confidence
+    document.getElementById('aslSequence').style.display = 'none';
+    document.getElementById('aslConfidence').style.display = 'none';
+    document.getElementById('translationConfidence').style.display = 'none';
+
     // Update translation results
     if (result.translation) {
         document.getElementById('englishText').textContent = result.translation.english_text;
-        document.getElementById('translationConfidence').textContent = 
-            `Confidence: ${(result.translation.confidence * 100).toFixed(1)}%`;
-        
         // Show suggestions if available
         if (result.translation.suggestions && result.translation.suggestions.length > 0) {
             const suggestionsSection = document.getElementById('suggestionsSection');
             const suggestionsList = document.getElementById('suggestionsList');
-            
             suggestionsList.innerHTML = '';
             result.translation.suggestions.forEach(suggestion => {
                 const li = document.createElement('li');
                 li.textContent = suggestion;
                 suggestionsList.appendChild(li);
             });
-            
             suggestionsSection.style.display = 'block';
+        } else {
+            document.getElementById('suggestionsSection').style.display = 'none';
         }
     }
     
@@ -385,3 +391,13 @@ window.addEventListener('beforeunload', function() {
         mediaStream.getTracks().forEach(track => track.stop());
     }
 });
+
+// Add cleanup function for when page is unloaded
+window.addEventListener('beforeunload', function() {
+    if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+    }
+});
+    if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+    }

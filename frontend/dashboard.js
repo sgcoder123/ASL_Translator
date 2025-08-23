@@ -2,17 +2,18 @@
 
 class DashboardManager {
     constructor() {
-        this.backendUrl = 'http://localhost:5000';
         this.videos = [];
         this.initializeEventListeners();
         this.loadDashboard();
     }
 
     initializeEventListeners() {
-        // Record button
+        // Record button (top right)
         const recordBtn = document.getElementById('recordVideoBtn');
         if (recordBtn) {
-            recordBtn.addEventListener('click', () => this.toggleRecordingSection());
+            recordBtn.addEventListener('click', () => {
+                window.location.href = 'record.html';
+            });
         }
 
         // Refresh button
@@ -21,10 +22,12 @@ class DashboardManager {
             refreshBtn.addEventListener('click', () => this.loadDashboard());
         }
 
-        // Create new button
+        // Create new button (in empty dashboard)
         const createNewBtn = document.getElementById('createNewBtn');
         if (createNewBtn) {
-            createNewBtn.addEventListener('click', () => this.toggleRecordingSection());
+            createNewBtn.addEventListener('click', () => {
+                window.location.href = 'record.html';
+            });
         }
     }
 
@@ -97,30 +100,13 @@ class DashboardManager {
 
 
     async loadDashboard() {
-        try {
-            // Load videos from backend
-            const response = await fetch(`${this.backendUrl}/files`);
-            if (response.ok) {
-                const data = await response.json();
-                this.videos = data.files || [];
-            } else {
-                console.error('Failed to load videos from backend');
-                this.videos = [];
-            }
-        } catch (error) {
-            console.error('Error loading dashboard:', error);
-            this.videos = [];
-        }
-
         // Also load videos from localStorage
         try {
             const localVideos = JSON.parse(localStorage.getItem('dashboardVideos') || '[]');
-            // Merge backend videos with local videos, avoiding duplicates
-            const localVideoIds = new Set(localVideos.map(v => v.id));
-            const backendVideos = this.videos.filter(v => !localVideoIds.has(v.id));
-            this.videos = [...backendVideos, ...localVideos];
+            this.videos = localVideos;
         } catch (error) {
             console.error('Error loading local videos:', error);
+            this.videos = [];
         }
 
         this.renderDashboard();
@@ -135,8 +121,8 @@ class DashboardManager {
                 <div class="dashboard-empty">
                     <i class="fas fa-video-slash"></i>
                     <p>No videos recorded yet</p>
-                    <button class="btn btn-primary btn-large" onclick="dashboardManager.toggleRecordingSection()">
-                        <i class="fas fa-plus"></i> Record Video
+                    <button class="btn btn-primary btn-large" onclick="window.location.href='record.html'">
+                        <i class="fas fa-plus"></i> Record New Video
                     </button>
                 </div>
             `;
@@ -144,15 +130,16 @@ class DashboardManager {
         }
 
         let html = '<div class="dashboard-list">';
-        this.videos.reverse().forEach((videoData) => {
-            const video = videoData.result;
+        // Use a copy of the array to avoid reversing in-place
+        [...this.videos].reverse().forEach((videoData) => {
             html += this.createVideoCard(videoData);
         });
         html += '</div>';
         
+        // "Record Another Video" button always navigates to record.html
         html += `
             <div style="text-align:center;margin-top:2rem;">
-                <button class="btn btn-primary btn-large" onclick="dashboardManager.toggleRecordingSection()">
+                <button class="btn btn-primary btn-large" onclick="window.location.href='record.html'">
                     <i class="fas fa-plus"></i> Record Another Video
                 </button>
             </div>
@@ -674,9 +661,118 @@ class DashboardManager {
     }
 }
 
+// Replace backend fetch with PyScript calls
+async function translateASLText(aslText) {
+    const result = await pyodide.runPythonAsync(`translate_asl("${aslText}")`);
+    // Use result in dashboard
+}
+
 // Initialize dashboard when DOM is loaded
 let dashboardManager;
 document.addEventListener('DOMContentLoaded', function() {
     dashboardManager = new DashboardManager();
     window.dashboardManager = dashboardManager; // Make it globally accessible
+    loadLocalVideos();
 });
+
+function loadLocalVideos() {
+    const dashboardContent = document.getElementById('dashboardContent');
+    let videos = JSON.parse(localStorage.getItem('dashboardVideos') || '[]');
+    if (!videos.length) {
+        dashboardContent.innerHTML = `
+            <div class="dashboard-empty">
+                <i class="fas fa-video-slash"></i>
+                <p>No videos recorded yet</p>
+                <button class="btn btn-primary btn-large" onclick="window.location.href='record.html'">
+                    <i class="fas fa-plus"></i> Record New Video
+                </button>
+            </div>
+        `;
+        return;
+    }
+    let html = '<div class="dashboard-list">';
+    videos.reverse().forEach(video => {
+        html += `
+            <div class="dashboard-card" data-video-id="${video.id}">
+                <div class="dashboard-card-video">
+                    <video src="${video.video}" controls preload="metadata"></video>
+                </div>
+                <div class="dashboard-card-info">
+                    <div class="dashboard-card-title">${video.name}</div>
+                    <div class="dashboard-card-date">${video.date}</div>
+                    <div class="dashboard-card-size">${(video.size/1024).toFixed(1)} KB</div>
+                    <button class="btn btn-primary btn-small translate-btn" data-video-id="${video.id}">Translate</button>
+                    <button class="btn btn-danger btn-small delete-btn" data-video-id="${video.id}" style="margin-left:0.5rem;">Delete</button>
+                    <div class="translation-result" id="translation-${video.id}" style="margin-top:0.5rem;"></div>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    dashboardContent.innerHTML = html;
+
+    // Add event listeners for translate buttons
+    document.querySelectorAll('.translate-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const videoId = btn.getAttribute('data-video-id');
+            const videoObj = videos.find(v => v.id === videoId);
+            if (!videoObj) return;
+            const translationDiv = document.getElementById(`translation-${videoId}`);
+            translationDiv.innerHTML = 'Translating...';
+
+            // Convert base64 to Blob
+            const base64 = videoObj.video.split(',')[1];
+            const byteCharacters = atob(base64);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'video/webm' });
+
+            // Send to backend
+            const formData = new FormData();
+            formData.append('video', blob, 'asl_recording.webm');
+            try {
+                const response = await fetch('http://localhost:5000/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    translationDiv.innerHTML = `<span style="color:red;">Error: ${errorData.error || 'Upload failed'}</span>`;
+                    return;
+                }
+                const result = await response.json();
+                // Show only ASL sequence and suggestions
+                let resultHtml = '';
+                if (result.asl_recognition) {
+                    resultHtml += `<div><strong>ASL Sequence:</strong> ${result.asl_recognition.sequence}</div>`;
+                }
+                if (result.translation && result.translation.suggestions && result.translation.suggestions.length > 0) {
+                    resultHtml += `<div><strong>Alternative Translations:</strong><ul>`;
+                    result.translation.suggestions.forEach(suggestion => {
+                        resultHtml += `<li>${suggestion}</li>`;
+                    });
+                    resultHtml += `</ul></div>`;
+                }
+                translationDiv.innerHTML = resultHtml;
+            } catch (error) {
+                translationDiv.innerHTML = `<span style="color:red;">Error: ${error.message}</span>`;
+            }
+        });
+    });
+
+    // Add event listeners for delete buttons
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const videoId = btn.getAttribute('data-video-id');
+            let videos = JSON.parse(localStorage.getItem('dashboardVideos') || '[]');
+            videos = videos.filter(v => v.id !== videoId);
+            localStorage.setItem('dashboardVideos', JSON.stringify(videos));
+            loadLocalVideos();
+        });
+    });
+}
+            localStorage.setItem('dashboardVideos', JSON.stringify(videos));
+            loadLocalVideos();

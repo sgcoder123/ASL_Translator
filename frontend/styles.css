@@ -1239,6 +1239,8 @@ html {
 .camera-container {
     position: relative;
     width: 100%;
+    max-width: 900px; /* Increased from 640px */
+    height: 540px;    /* Explicit height for larger window */
     aspect-ratio: 16/9;
     background: var(--bg-tertiary);
     border-radius: 16px;
@@ -1310,6 +1312,7 @@ html {
 @media (max-width: 600px) {
     .camera-container {
         max-width: 100%;
+        height: auto;
         aspect-ratio: 16/9;
     }
     .record-section {
@@ -1710,7 +1713,8 @@ html {
 .camera-container {
     position: relative;
     width: 100%;
-    max-width: 640px;
+    max-width: 900px; /* Increased from 640px */
+    height: 540px;    /* Explicit height for larger window */
     aspect-ratio: 16/9;
     background: var(--bg-tertiary);
     border-radius: 16px;

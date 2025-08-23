@@ -656,3 +656,12 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 });
+
+// Example: Call PyScript translation from JS
+function translateASLText(aslText) {
+    // pyodide is available globally via PyScript
+    pyodide.runPythonAsync(`translate_asl("${aslText}")`).then(result => {
+        // Use result in UI
+        updateTranslationResult(result);
+    });
+}

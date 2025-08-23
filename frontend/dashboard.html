@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 </head>
 <body>
     <!-- Animated Background -->
@@ -111,7 +113,7 @@
                     <div class="dashboard-empty">
                         <i class="fas fa-video-slash"></i>
                         <p>Nothing is here yet</p>
-                        <button class="btn btn-primary btn-large" id="createNewBtn">
+                        <button class="btn btn-primary btn-large" id="createNewBtn" onclick="window.location.href='record.html'">
                             <i class="fas fa-plus"></i> Record New Video
                         </button>
                     </div>
@@ -146,5 +148,12 @@
         </footer>
     </div>
     <script src="dashboard.js"></script>
+    <py-script src="../pyscript/main_pyscript.py"></py-script>
+</body>
+</html>
+        </footer>
+    </div>
+    <script src="dashboard.js"></script>
+    <py-script src="../pyscript/main_pyscript.py"></py-script>
 </body>
 </html>
