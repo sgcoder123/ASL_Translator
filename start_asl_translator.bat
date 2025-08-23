@@ -121,3 +121,6 @@ goto end
 echo.
 echo 🎉 Thank you for using ASL Translator!
 pause
+
+REM Option 3 starts backend and opens frontend for you.
+REM Just run this file and follow the prompts.

@@ -36,16 +36,21 @@ def check_dependencies():
     """Check if required dependencies are installed"""
     print("\n🔍 Checking dependencies...")
     
-    required_packages = [
-        'flask', 'opencv-python', 'mediapipe', 'tensorflow', 
-        'torch', 'transformers', 'numpy', 'pillow'
-    ]
-    
+    import_names = {
+        'flask': 'flask',
+        'opencv-python': 'cv2',
+        'mediapipe': 'mediapipe',
+        'tensorflow': 'tensorflow',
+        'torch': 'torch',
+        'transformers': 'transformers',
+        'numpy': 'numpy',
+        'pillow': 'PIL'
+    }
     missing_packages = []
     
-    for package in required_packages:
+    for package, import_name in import_names.items():
         try:
-            __import__(package.replace('-', '_'))
+            __import__(import_name)
             print(f"   ✅ {package}")
         except ImportError:
             print(f"   ❌ {package}")
@@ -58,31 +63,52 @@ def check_dependencies():
     
     return True
 
+def check_venv():
+    """Check if the .asltest venv exists and is activated"""
+    venv_dir = Path('.asltest')
+    if not venv_dir.exists():
+        print(f"❌ Virtual environment '.asltest' not found in {Path.cwd()}")
+        print("   Create it with: python -m venv .asltest")
+        return False
+
+    # Check if we're using the venv's Python
+    python_path = sys.executable
+    print(f"🔍 Using Python interpreter: {python_path}")
+    if str(venv_dir) not in python_path:
+        print("⚠️  You are not using the '.asltest' venv Python interpreter.")
+        print("   Activate it before running this script:")
+        print("   Windows: .\\.asltest\\Scripts\\activate")
+        print("   macOS/Linux: source .asltest/bin/activate")
+        return False
+    print("✅ '.asltest' venv is present and active.")
+    return True
+
 def start_backend():
     """Start the backend server"""
     print("\n🚀 Starting ASL Translator Backend...")
-    
-    backend_dir = Path("backend")
+
+    root_dir = Path(__file__).parent.resolve()
+    backend_dir = root_dir / "backend"
+    main_py = backend_dir / "main.py"
+
     if not backend_dir.exists():
-        print("❌ Backend directory not found")
+        print(f"❌ Backend directory not found: {backend_dir}")
+        print("   Make sure you are running this script from the ASL_Translator root directory.")
         return False
-    
+
+    if not main_py.exists():
+        print(f"❌ main.py not found in backend directory: {main_py}")
+        print("   Make sure backend/main.py exists.")
+        return False
+
     # Change to backend directory
     os.chdir(backend_dir)
-    
+
     try:
-        # Check if main.py exists
-        if not Path("main.py").exists():
-            print("❌ main.py not found in backend directory")
-            return False
-        
         print("   Starting Flask server on http://localhost:5000")
         print("   Press Ctrl+C to stop the server")
         print("   " + "="*50)
-        
-        # Start the backend server
         subprocess.run([sys.executable, "main.py"])
-        
     except KeyboardInterrupt:
         print("\n\n🛑 Backend server stopped")
         return True
@@ -90,35 +116,33 @@ def start_backend():
         print(f"\n❌ Error starting backend: {e}")
         return False
     finally:
-        # Return to original directory
-        os.chdir("..")
-    
+        os.chdir(root_dir)
     return True
 
 def open_frontend():
     """Open the frontend in the default browser"""
     print("\n🌐 Opening frontend...")
-    
-    frontend_dir = Path("frontend")
-    if not frontend_dir.exists():
-        print("❌ Frontend directory not found")
-        return False
-    
+
+    root_dir = Path(__file__).parent.resolve()
+    frontend_dir = root_dir / "frontend"
     dashboard_path = frontend_dir / "dashboard.html"
-    if not dashboard_path.exists():
-        print("❌ dashboard.html not found")
+
+    if not frontend_dir.exists():
+        print(f"❌ Frontend directory not found: {frontend_dir}")
+        print("   Make sure you are running this script from the ASL_Translator root directory.")
         return False
-    
+
+    if not dashboard_path.exists():
+        print(f"❌ dashboard.html not found: {dashboard_path}")
+        print("   Make sure frontend/dashboard.html exists.")
+        return False
+
     try:
-        # Convert to file URL
         dashboard_url = dashboard_path.absolute().as_uri()
         print(f"   Opening: {dashboard_url}")
-        
-        # Open in default browser
         webbrowser.open(dashboard_url)
         print("✅ Frontend opened in browser")
         return True
-        
     except Exception as e:
         print(f"❌ Error opening frontend: {e}")
         return False
@@ -126,6 +150,9 @@ def open_frontend():
 def main():
     """Main startup function"""
     print_banner()
+    # Check venv first
+    if not check_venv():
+        sys.exit(1)
     
     # Check Python version
     if not check_python_version():
@@ -221,4 +248,5 @@ if __name__ == "__main__":
         print("\n\n🛑 Startup cancelled")
     except Exception as e:
         print(f"\n❌ Unexpected error: {e}")
+        sys.exit(1)
         sys.exit(1)
