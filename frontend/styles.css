@@ -1389,3 +1389,411 @@ html {
     background: var(--bg-tertiary);
     color: var(--primary-color);
 }
+
+/* Enhanced Dashboard Styles */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.dashboard-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+
+
+/* ASL Results */
+.asl-results {
+    background: var(--bg-secondary);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--primary-color);
+}
+
+.asl-sequence {
+    margin-bottom: 0.5rem;
+    font-family: monospace;
+    font-size: 1.1rem;
+}
+
+.asl-confidence {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Translation Results */
+.translation-results {
+    background: var(--bg-secondary);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--success-color);
+}
+
+.english-text {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.translation-confidence {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.translation-suggestions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.translation-suggestions li {
+    background: var(--bg-tertiary);
+    padding: 0.5rem;
+    margin: 0.25rem 0;
+    border-radius: 0.25rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Notifications */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--bg-primary);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-lg);
+    padding: 1rem 1.5rem;
+    border-left: 4px solid var(--primary-color);
+    z-index: 1000;
+    max-width: 400px;
+    animation: slideIn 0.3s ease;
+}
+
+.notification-success {
+    border-left-color: var(--success-color);
+}
+
+.notification-error {
+    border-left-color: var(--error-color);
+}
+
+.notification-warning {
+    border-left-color: var(--warning-color);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.notification-content i {
+    font-size: 1.2rem;
+}
+
+.notification-success .notification-content i {
+    color: var(--success-color);
+}
+
+.notification-error .notification-content i {
+    color: var(--error-color);
+}
+
+.notification-warning .notification-content i {
+    color: var(--warning-color);
+}
+
+.notification-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.notification-close:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Translation Results for Record Page */
+.translation-results {
+    background: var(--bg-primary);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    padding: 2rem;
+    margin-top: 2rem;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.results-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.results-header h3 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.results-content {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.asl-section, .translation-section, .suggestions-section {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.translation-section {
+    border-left-color: var(--success-color);
+}
+
+.suggestions-section {
+    border-left-color: var(--accent-color);
+}
+
+.asl-section h4, .translation-section h4, .suggestions-section h4 {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.asl-sequence {
+    font-family: monospace;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.english-text {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.confidence {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.suggestions-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.suggestions-section li {
+    background: var(--bg-tertiary);
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    border-left: 3px solid var(--accent-color);
+}
+
+.results-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.results-actions .btn {
+    min-width: 150px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .translation-results {
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .results-content {
+        gap: 1.5rem;
+    }
+    
+    .asl-section, .translation-section, .suggestions-section {
+        padding: 1rem;
+    }
+    
+    .results-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .results-actions .btn {
+        width: 100%;
+        max-width: 250px;
+    }
+}
+
+/* Recording Section for Dashboard */
+.recording-section {
+    background: var(--bg-primary);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    padding: 2rem;
+    margin-bottom: 3rem;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.recording-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.recording-header h3 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.recording-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.recording-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.camera-container {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    aspect-ratio: 16/9;
+    background: var(--bg-tertiary);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.camera-container.recording {
+    background: white;
+    box-shadow: 0 0 0 4px var(--primary-color), var(--shadow-lg);
+    border: 2px solid var(--primary-color);
+    animation: recordingPulse 2s ease-in-out infinite;
+}
+
+@keyframes recordingPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 4px var(--primary-color), var(--shadow-lg);
+    }
+    50% {
+        box-shadow: 0 0 0 6px var(--primary-color), var(--shadow-lg);
+    }
+}
+
+.camera-feed {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    background: #000;
+}
+
+.camera-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    border-radius: 16px;
+}
+
+.recording-controls {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+.recording-status {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    min-width: 120px;
+}
+
+/* Responsive adjustments for recording */
+@media (max-width: 768px) {
+    .recording-section {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .camera-container {
+        max-width: 100%;
+    }
+    
+    .recording-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .recording-controls .btn {
+        width: 100%;
+        max-width: 250px;
+    }
+}

@@ -51,9 +51,40 @@
                                 <i class="fas fa-circle"></i> Start Recording
                             </button>
                             <button class="btn btn-outline btn-large" id="saveBtn" style="display:none;">
-                                <i class="fas fa-save"></i> Save to Dashboard
+                                <i class="fas fa-save"></i> Save & Translate
                             </button>
                             <span id="recordingStatus" class="recording-status"></span>
+                        </div>
+                        
+                        <!-- Translation Results Section -->
+                        <div id="translationResults" class="translation-results" style="display:none;">
+                            <div class="results-header">
+                                <h3><i class="fas fa-language"></i> Translation Results</h3>
+                            </div>
+                            <div class="results-content">
+                                <div class="asl-section">
+                                    <h4>ASL Recognition</h4>
+                                    <div class="asl-sequence" id="aslSequence">Processing...</div>
+                                    <div class="confidence" id="aslConfidence"></div>
+                                </div>
+                                <div class="translation-section">
+                                    <h4>English Translation</h4>
+                                    <div class="english-text" id="englishText">Processing...</div>
+                                    <div class="confidence" id="translationConfidence"></div>
+                                </div>
+                                <div class="suggestions-section" id="suggestionsSection" style="display:none;">
+                                    <h4>Alternative Translations</h4>
+                                    <ul id="suggestionsList"></ul>
+                                </div>
+                            </div>
+                            <div class="results-actions">
+                                <button class="btn btn-primary" id="saveToDashboardBtn">
+                                    <i class="fas fa-save"></i> Save to Dashboard
+                                </button>
+                                <button class="btn btn-outline" id="recordAnotherBtn">
+                                    <i class="fas fa-redo"></i> Record Another
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

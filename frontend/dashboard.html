@@ -36,14 +36,84 @@
             <section class="dashboard-section">
                 <div class="dashboard-header">
                     <h2 class="dashboard-title gradient-text"><i class="fas fa-table"></i> Dashboard</h2>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary btn-small" id="recordVideoBtn" onclick="if(window.dashboardManager) window.dashboardManager.toggleRecordingSection()">
+                            <i class="fas fa-video"></i> Record Video
+                        </button>
+                        <button class="btn btn-outline btn-small" id="refreshBtn">
+                            <i class="fas fa-refresh"></i> Refresh
+                        </button>
+                    </div>
                 </div>
+                
+                <!-- Recording Section -->
+                <div id="recordingSection" class="recording-section" style="display: none;">
+                    <div class="recording-header">
+                        <h3><i class="fas fa-camera"></i> Record ASL Video</h3>
+                        <p>Record a video to translate ASL to English</p>
+                    </div>
+                    
+                    <div class="recording-content">
+                        <div class="camera-container" id="cameraContainer">
+                            <video id="cameraFeed" autoplay playsinline muted class="camera-feed"></video>
+                            <div id="cameraOverlay" class="camera-overlay">
+                                <button class="btn btn-primary" id="startCameraBtn">
+                                    <i class="fas fa-camera"></i> Enable Camera
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="recording-controls" id="recordingControls" style="display: none;">
+                            <button class="btn btn-primary btn-large" id="recordBtn">
+                                <i class="fas fa-circle"></i> Start Recording
+                            </button>
+                            <button class="btn btn-outline btn-large" id="saveBtn" style="display: none;">
+                                <i class="fas fa-save"></i> Save & Translate
+                            </button>
+                            <span id="recordingStatus" class="recording-status"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Translation Results Section -->
+                    <div id="translationResults" class="translation-results" style="display: none;">
+                        <div class="results-header">
+                            <h3><i class="fas fa-language"></i> Translation Results</h3>
+                        </div>
+                        <div class="results-content">
+                            <div class="asl-section">
+                                <h4>ASL Recognition</h4>
+                                <div class="asl-sequence" id="aslSequence">Processing...</div>
+                                <div class="confidence" id="aslConfidence"></div>
+                            </div>
+                            <div class="translation-section">
+                                <h4>English Translation</h4>
+                                <div class="english-text" id="englishText">Processing...</div>
+                                <div class="confidence" id="translationConfidence"></div>
+                            </div>
+                            <div class="suggestions-section" id="suggestionsSection" style="display: none;">
+                                <h4>Alternative Translations</h4>
+                                <ul id="suggestionsList"></ul>
+                            </div>
+                        </div>
+                        <div class="results-actions">
+                            <button class="btn btn-primary" id="saveToDashboardBtn">
+                                <i class="fas fa-save"></i> Save to Dashboard
+                            </button>
+                            <button class="btn btn-outline" id="recordAnotherBtn">
+                                <i class="fas fa-redo"></i> Record Another
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Content -->
                 <div id="dashboardContent">
                     <div class="dashboard-empty">
                         <i class="fas fa-video-slash"></i>
                         <p>Nothing is here yet</p>
-                        <a href="record.html" class="btn btn-primary btn-large" id="createNewBtn">
-                            <i class="fas fa-plus"></i> Create New
-                        </a>
+                        <button class="btn btn-primary btn-large" id="createNewBtn">
+                            <i class="fas fa-plus"></i> Record New Video
+                        </button>
                     </div>
                 </div>
             </section>

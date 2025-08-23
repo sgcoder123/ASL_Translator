@@ -5,6 +5,8 @@ let mediaStream = null;
 let mediaRecorder = null;
 let recordedChunks = [];
 let isRecording = false;
+let backendUrl = 'http://localhost:5000';
+let currentVideoBlob = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     cameraFeed = document.getElementById('cameraFeed');
@@ -243,6 +245,138 @@ function resetRecordingState() {
     recordingStatus.textContent = 'Ready to record';
     
     console.log('Recording state reset successfully');
+}
+
+// New function to upload and translate video
+async function uploadAndTranslateVideo(videoBlob) {
+    try {
+        // Create FormData for upload
+        const formData = new FormData();
+        formData.append('video', videoBlob, 'asl_recording.webm');
+        
+        // Upload to backend
+        const response = await fetch(`${backendUrl}/upload`, {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Upload failed');
+        }
+        
+        return await response.json();
+        
+    } catch (error) {
+        console.error('Error uploading video:', error);
+        throw error;
+    }
+}
+
+// New function to show translation results
+function showTranslationResults(result) {
+    // Hide recording controls
+    recordControls.style.display = 'none';
+    
+    // Show translation results
+    const translationResults = document.getElementById('translationResults');
+    translationResults.style.display = 'block';
+    
+    // Update ASL recognition results
+    if (result.asl_recognition) {
+        document.getElementById('aslSequence').textContent = result.asl_recognition.sequence;
+        document.getElementById('aslConfidence').textContent = 
+            `Confidence: ${(result.asl_recognition.confidence * 100).toFixed(1)}%`;
+    }
+    
+    // Update translation results
+    if (result.translation) {
+        document.getElementById('englishText').textContent = result.translation.english_text;
+        document.getElementById('translationConfidence').textContent = 
+            `Confidence: ${(result.translation.confidence * 100).toFixed(1)}%`;
+        
+        // Show suggestions if available
+        if (result.translation.suggestions && result.translation.suggestions.length > 0) {
+            const suggestionsSection = document.getElementById('suggestionsSection');
+            const suggestionsList = document.getElementById('suggestionsList');
+            
+            suggestionsList.innerHTML = '';
+            result.translation.suggestions.forEach(suggestion => {
+                const li = document.createElement('li');
+                li.textContent = suggestion;
+                suggestionsList.appendChild(li);
+            });
+            
+            suggestionsSection.style.display = 'block';
+        }
+    }
+    
+    // Add event listeners for action buttons
+    document.getElementById('saveToDashboardBtn').addEventListener('click', saveToDashboard);
+    document.getElementById('recordAnotherBtn').addEventListener('click', recordAnother);
+}
+
+// New function to save to dashboard
+async function saveToDashboard() {
+    try {
+        if (!currentVideoBlob) {
+            alert('No video to save');
+            return;
+        }
+        
+        // Convert to base64 for localStorage
+        const reader = new FileReader();
+        reader.onload = function() {
+            try {
+                const base64data = reader.result;
+                
+                // Save to localStorage
+                let videos = JSON.parse(localStorage.getItem('dashboardVideos') || '[]');
+                const id = 'vid_' + Date.now();
+                const videoEntry = {
+                    id,
+                    name: `ASL Recording ${new Date().toLocaleString()}`,
+                    date: new Date().toLocaleString(),
+                    video: base64data,
+                    size: currentVideoBlob.size
+                };
+                
+                videos.push(videoEntry);
+                localStorage.setItem('dashboardVideos', JSON.stringify(videos));
+                
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+                
+            } catch (error) {
+                console.error('Error saving to dashboard:', error);
+                alert('Error saving to dashboard. Please try again.');
+            }
+        };
+        
+        reader.readAsDataURL(currentVideoBlob);
+        
+    } catch (error) {
+        console.error('Error saving to dashboard:', error);
+        alert('Error saving to dashboard. Please try again.');
+    }
+}
+
+// New function to record another video
+function recordAnother() {
+    // Hide translation results
+    document.getElementById('translationResults').style.display = 'none';
+    
+    // Show recording controls
+    recordControls.style.display = 'flex';
+    
+    // Reset recording state
+    resetRecordingState();
+    
+    // Clear current video
+    currentVideoBlob = null;
+    
+    // Reset recording status
+    recordingStatus.textContent = 'Ready to record';
 }
 
 // Add cleanup function for when page is unloaded

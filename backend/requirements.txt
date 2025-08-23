@@ -1,17 +1,24 @@
-# Backend dependencies (macOS Apple Silicon, Python 3.11)
-# If you are on Intel macOS or Linux/Windows, adjust TensorFlow packages accordingly.
-
+# Backend dependencies for ASL Translator
 Flask==3.0.3
 Flask-Cors==4.0.1
 Werkzeug==3.0.3
 
+# Core ML and Computer Vision
 numpy==1.26.4
 opencv-python==4.10.0.84
 Pillow==10.4.0
-transformers==4.43.3
+mediapipe==0.10.8
 
-# TensorFlow for Apple Silicon (Metal acceleration)
-tensorflow-macos==2.16.1
-tensorflow-metal==1.1.0
-tensorflow-hub==0.16.1
-tf-models-official==2.16.1
+# Deep Learning and NLP
+tensorflow==2.15.0
+transformers==4.43.3
+torch==2.1.2
+torchvision==0.16.2
+
+# Video Processing
+moviepy==1.0.3
+ffmpeg-python==0.2.0
+
+# Utilities
+requests==2.31.0
+python-dotenv==1.0.0
